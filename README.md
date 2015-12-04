@@ -1,8 +1,19 @@
 # C-Invoking-Python
 
+-------------------------------------
+###Introduction
+This is a example that C invokes a python object and got the result from python object.
 
 -------------------------------------
-License
+###Compiling Software
+$ make
+
+-------------------------------------
+###Running Software
+$ ./c_python
+
+-------------------------------------
+###License
 
 The MIT License (MIT)
 
