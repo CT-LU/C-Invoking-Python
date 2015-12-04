@@ -2,7 +2,7 @@
 
 -------------------------------------
 ###Introduction
-This is an example that C invokes a function of a Python object. It demonstrates how to send a image data from C to Python showing this image and receive a result from Python. 
+This is an example that C invokes a function of a Python object. It demonstrates how to send a image data from C to Python for showing this image and receive a result from Python. 
 
 C呼叫Python程式，傳一張照片到Python顯示出來，並接收Python傳回的參數
 
