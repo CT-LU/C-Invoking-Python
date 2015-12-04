@@ -5,11 +5,16 @@
 This is a example that C invokes a python object and got the result from python object.
 
 -------------------------------------
-###Compiling Software
+###Compiling the code (Linux)
 $ make
 
+<br />Requirements:
+<br />Python 2.7.6
+<br />[GCC 4.8.2] on linux2
+<br />g++ (Ubuntu 4.8.4-2ubuntu1~14.04) 4.8.4
+
 -------------------------------------
-###Running Software
+###Running the code (Linux)
 $ ./c_python
 
 -------------------------------------
