@@ -1,16 +1,17 @@
 #include "CPythonUtil.h"
 #include <iostream>
 #include <opencv2/core/utility.hpp>
-#include "opencv2/video/tracking.hpp"
-#include "opencv2/videoio/videoio.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
+#include <opencv2/video/tracking.hpp>
+#include <opencv2/videoio/videoio.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <numpy/arrayobject.h>
 
 using namespace std;
 using namespace cv;
 
-#define FRAME_WIDTH	1280
-#define FRAME_HEIGHT	720
+#define FRAME_WIDTH	640	
+#define FRAME_HEIGHT	480	
 
 /*
  * Send a image to Python and then get the results back which are 4 integer
@@ -18,16 +19,21 @@ using namespace cv;
 void sendImage(CinvokePythonUtil& pyObj, const Mat& frame)
 {
 
-	
+PyObject *py_array;
+npy_intp dims[1] = { FRAME_WIDTH*FRAME_HEIGHT*3 };
+import_array ();
+py_array = PyArray_SimpleNewFromData (1, dims, NPY_UINT8, const_cast<unsigned char*>(frame.ptr(0)));
+
 	pyObj.storeResult(pyObj.callMethod(pyObj.getInstance(),
 			       	"sendImg",
-			       	"(u, i, i, i)", frame.ptr(0), FRAME_HEIGHT, FRAME_WIDTH, 3));
+			       	"(O, i, i, i)", py_array, FRAME_HEIGHT, FRAME_WIDTH, 3));
+			       	//"(u, i, i, i)", frame.ptr(0), FRAME_HEIGHT, FRAME_WIDTH, 3));
 	int x1, y1;
 	int x2, y2;
 	pyObj.parseTuple(pyObj.getResult(), "iiii", &x1, &y1, &x2, &y2);
 	cout << "x1: " << x1 << " y1: " << y1 << endl;
 	cout << "x2: " << x2 << " y2: " << y2 << endl;
-
+//Py_DECREF (py_array);
 }
 
 /*
@@ -51,8 +57,8 @@ int main(int argc, char const *argv[])
 {
 	CinvokePythonUtil pyObj("hi", "Ludan");
         VideoCapture cap;
-        Mat frame;
-
+	
+	Mat frame;
         frame.create(Size(FRAME_WIDTH, FRAME_HEIGHT), CV_8UC3);
 
         //if ( frame.isContinuous() ) cout << "yes" << endl;
@@ -75,7 +81,7 @@ int main(int argc, char const *argv[])
                 cout << "Can not read data from the Camera !!" << endl;
 		exit(1);
         }
-
+	
 	sendImage(pyObj, frame);	
 	showImage(pyObj, frame);	
 

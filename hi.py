@@ -9,8 +9,10 @@ class Ludan():
     C invokes the sendImge() to send a image from C to Python
     '''
     def sendImg(self, frame, height, width, channels):
-        self.img = np.frombuffer(frame, np.uint8)
-        self.img = np.reshape(self.img, (height, width, channels))
+        print type(frame)
+        #self.img = np.frombuffer(frame, np.uint8)
+        #self.img = np.reshape(self.img, (height, width, channels))
+        self.img = np.reshape(frame, (height, width, channels))
         print self.img.shape
         
         return 110, 50, 600, 50
