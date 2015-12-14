@@ -41,6 +41,8 @@ class CinvokePythonUtil {
 		 * As long as you call storeResult, u should notice that it can free the previous result. 
 		 */	
 		void storeResult(PyObject* result); 
+		
+		PyObject* createPyArray(const unsigned char* frame, int height, int width, int channels);
 };
 
 

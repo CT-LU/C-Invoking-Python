@@ -19,11 +19,9 @@ using namespace cv;
 void sendImage(CinvokePythonUtil& pyObj, const Mat& frame)
 {
 
-PyObject *py_array;
-npy_intp dims[1] = { FRAME_WIDTH*FRAME_HEIGHT*3 };
-import_array ();
-py_array = PyArray_SimpleNewFromData (1, dims, NPY_UINT8, const_cast<unsigned char*>(frame.ptr(0)));
-
+	PyObject *py_array;
+	
+	py_array = pyObj.createPyArray(frame.ptr(0), FRAME_HEIGHT, FRAME_WIDTH, 3);
 	pyObj.storeResult(pyObj.callMethod(pyObj.getInstance(),
 			       	"sendImg",
 			       	"(O, i, i, i)", py_array, FRAME_HEIGHT, FRAME_WIDTH, 3));
@@ -33,7 +31,7 @@ py_array = PyArray_SimpleNewFromData (1, dims, NPY_UINT8, const_cast<unsigned ch
 	pyObj.parseTuple(pyObj.getResult(), "iiii", &x1, &y1, &x2, &y2);
 	cout << "x1: " << x1 << " y1: " << y1 << endl;
 	cout << "x2: " << x2 << " y2: " << y2 << endl;
-//Py_DECREF (py_array);
+	//Py_DECREF (py_array);
 }
 
 /*

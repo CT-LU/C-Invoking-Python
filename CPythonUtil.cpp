@@ -1,4 +1,14 @@
 #include "CPythonUtil.hpp"
+#include <numpy/arrayobject.h>
+
+
+PyObject* CinvokePythonUtil::createPyArray(const unsigned char* frame, int height, int width, int channels)
+{
+	PyObject *py_array;
+	npy_intp dims[1] = { height*width*channels };
+	import_array ();
+	return py_array = PyArray_SimpleNewFromData (1, dims, NPY_UINT8, const_cast<unsigned char*>(frame));
+}
 
 /*
  * The constructor is to perform a couple of necessary calls
