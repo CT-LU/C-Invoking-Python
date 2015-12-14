@@ -4,11 +4,16 @@ CFLAGS = -fno-strict-aliasing -D_FORTIFY_SOURCE=2 -g -fstack-protector --param=s
 	 -Werror=format-security  -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes \
 	 -Xlinker -export-dynamic -Wl,-O1 -Wl,-Bsymbolic-functions
 
-all:
-	g++ main.cpp -o c_python $(INC) $(LIBS) $(CFLAGS) 
+all: c_invoke_py
+
+c_invoke_py: main.cpp CPythonUtil.o
+	g++ $? $(INC) $(LIBS) $(CFLAGS) -o $@ 
+
+CPythonUtil.o: CPythonUtil.cpp
+	g++ $< $(INC) $(LIBS) $(CFLAGS) -c
 	
 clean:
-	rm -f  *.o c_python 
+	rm -f  *.o c_invoke_py 
 
 #use following instructions to get the argumets above
 #python-config --cflags
