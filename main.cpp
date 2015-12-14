@@ -5,7 +5,6 @@
 #include <opencv2/videoio/videoio.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <numpy/arrayobject.h>
 
 using namespace std;
 using namespace cv;
@@ -18,14 +17,12 @@ using namespace cv;
  */
 void sendImage(CinvokePythonUtil& pyObj, const Mat& frame)
 {
-
-	PyObject *py_array;
-	
-	py_array = pyObj.createPyArray(frame.ptr(0), FRAME_HEIGHT, FRAME_WIDTH, 3);
 	pyObj.storeResult(pyObj.callMethod(pyObj.getInstance(),
 			       	"sendImg",
-			       	"(O, i, i, i)", py_array, FRAME_HEIGHT, FRAME_WIDTH, 3));
-			       	//"(u, i, i, i)", frame.ptr(0), FRAME_HEIGHT, FRAME_WIDTH, 3));
+			       	"(O, i, i, i)", 
+				pyObj.createPyArray(frame.ptr(0), FRAME_HEIGHT, FRAME_WIDTH, 3), 
+				FRAME_HEIGHT, FRAME_WIDTH, 3));
+	
 	int x1, y1;
 	int x2, y2;
 	pyObj.parseTuple(pyObj.getResult(), "iiii", &x1, &y1, &x2, &y2);
